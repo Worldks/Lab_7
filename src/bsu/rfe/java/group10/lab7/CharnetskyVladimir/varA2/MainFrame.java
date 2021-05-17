@@ -194,6 +194,57 @@ public class MainFrame extends JFrame {
             final String destinationAddress = textFieldTo.getText();
             final String message = textAreaOutgoing.getText();
 
+
+            byte[] bytes;
+            int[] NumbersAndPoint = {48,49,50,51,52,53,54,55,56,57,46};
+            int[] Point_ASCII = {46};
+            int[] Symbols_ASCII = {65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122};
+            try {
+                bytes = destinationAddress.getBytes("US-ASCII");
+                int c = 0;
+                int Point = 0;
+                int Symbols = 0;
+                int Signs = 0;
+                for(int i = 0; i < bytes.length; i++) {
+                    int f = 0;
+                    for(int j = 0; j < 11; j++) {
+                        if (bytes[i] == NumbersAndPoint[j]){
+                            c++;
+                            f++;
+                        }
+                    }
+                    for(int j = 0; j < 1; j++) {
+                        if (bytes[i] == Point_ASCII[j]){
+                            Point++;
+                            f++;
+                        }
+                    }
+                    for(int j = 0; j < 50; j++) {
+                        if (bytes[i] == Symbols_ASCII[j]){
+                            Symbols++;
+                            f++;
+                        }
+                    }
+                    if(f == 0){
+                        Signs++;
+                    }
+                }
+                if(c != bytes.length){
+                    JOptionPane.showMessageDialog(this, "Вы ввели недопустимые значения т.е. отличные от (0-9 и . (точки))", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                }
+                if(Point == 0){
+                    JOptionPane.showMessageDialog(this, "Вы не ввели точку(и) (она обязательна при вводе))", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                }
+                if(Symbols != 0){
+                    JOptionPane.showMessageDialog(this, "Вы ввели букву(ы) (это недопустимо)", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                }
+                if(Signs != 0){
+                    JOptionPane.showMessageDialog(this, "Вы ввели симол(ы) (это недопустимо)", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                }
+            }catch(UnsupportedEncodingException e){
+                System.out.println("Неподдерживаемая кодировка!");
+            }
+            
             // Убеждаемся, что поля не пустые
             if (senderName.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Введите имя отправителя", "Ошибка", JOptionPane.ERROR_MESSAGE);
